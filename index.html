@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دربك | دربك أسهل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body id="top">
+
+<!-- أيقونات SVG مشتركة (خطوط بسيطة) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-fuel" viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v16M3 21h12M15 10h2a2 2 0 0 1 2 2v6a1 1 0 0 0 2 0V8l-2-2M6 7h6v4H6z"/></symbol>
+    <symbol id="i-wc" viewBox="0 0 24 24"><circle cx="9" cy="5" r="2"/><path d="M6 9h6l1 6h-2v6h-2v-6H6l1-6z M16 3v18 M16 9h3"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.5 12h11L21 7H6"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><path d="M3 13l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5v5H3z"/><circle cx="7" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14 7a4 4 0 0 0 5 5l-8 8a2.1 2.1 0 0 1-3-3l8-8a4 4 0 0 1-2-2z"/></symbol>
+    <symbol id="i-mosque" viewBox="0 0 24 24"><path d="M3 21h18M5 21V12a7 7 0 0 1 14 0v9M12 5V2M10 21v-4a2 2 0 0 1 4 0v4"/></symbol>
+    <symbol id="i-food" viewBox="0 0 24 24"><path d="M6 3v7a2 2 0 0 0 2 2v9M10 3v7M8 3v4M16 21V3c-2 0-3 2-3 5v4h3"/></symbol>
+    <symbol id="i-cafe" viewBox="0 0 24 24"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 10h2a2 2 0 0 1 0 4h-2M7 2v2M11 2v2"/></symbol>
+    <symbol id="i-atm" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 10h4M7 14h10M15 10h2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></symbol>
+    <symbol id="i-road" viewBox="0 0 24 24"><path d="M8 22L10 2M16 22L14 2M12 4v3M12 11v3M12 18v2"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+  </defs>
+</svg>
+
+<!-- 1. الشريط العلوي -->
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="#top" class="brand" aria-label="دربك - الرئيسية">
+      <svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M8 58 V26 A24 24 0 0 1 56 26 V58 Z" fill="#145A38" stroke="#C4A46A" stroke-width="3"/>
+        <path d="M26 58 L30 14 H34 L38 58 Z" fill="#C4A46A"/>
+        <path d="M32 20 V25 M32 31 V36 M32 42 V47" stroke="#145A38" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">دربك</span>
+        <span class="brand-tag">دليلك للمحطات والخدمات على طريقك</span>
+      </span>
+    </a>
+    <nav class="nav-links" aria-label="القائمة الرئيسية">
+      <a href="#top" class="active">الرئيسية</a>
+      <a href="#planner">مخطط الرحلة</a>
+      <a href="#stations">المحطات</a>
+      <a href="#about">عن دربك</a>
+    </nav>
+  </div>
+</header>
+
+<!-- 2. الواجهة الترحيبية -->
+<section class="hero">
+  <div class="hero-inner">
+    <h1>دربك أسهل</h1>
+    <p class="hero-sub">اعثر على أقرب محطات الوقود والخدمات على طريق سفرك في المملكة</p>
+    <a href="#planner" class="hero-cta">خطط رحلتك</a>
+  </div>
+</section>
+<div class="najdi-band" aria-hidden="true"></div>
+
+<!-- 3. شريط أيقونات الخدمات -->
+<section class="services-band" aria-label="خدمات محطات الوقود">
+  <ul class="service-icons">
+    <li><svg class="ic"><use href="#i-fuel"/></svg><span>وقود</span></li>
+    <li><svg class="ic"><use href="#i-wc"/></svg><span>دورات مياه</span></li>
+    <li><svg class="ic"><use href="#i-cart"/></svg><span>بقالة</span></li>
+    <li><svg class="ic"><use href="#i-car"/></svg><span>غسيل سيارات</span></li>
+    <li><svg class="ic"><use href="#i-wrench"/></svg><span>ورشة</span></li>
+    <li><svg class="ic"><use href="#i-mosque"/></svg><span>مسجد</span></li>
+    <li><svg class="ic"><use href="#i-food"/></svg><span>مطعم</span></li>
+    <li><svg class="ic"><use href="#i-cafe"/></svg><span>مقهى</span></li>
+    <li><svg class="ic"><use href="#i-atm"/></svg><span>صراف</span></li>
+  </ul>
+</section>
+
+<main>
+  <!-- 4. مخطط رحلتك -->
+  <section class="card planner" id="planner">
+    <div class="card-head">
+      <h2>مخطط رحلتك</h2>
+    </div>
+
+    <div class="planner-grid">
+      <div class="field">
+        <span class="field-label"><svg class="ic sm"><use href="#i-pin"/></svg> من</span>
+        <div class="fixed-field">الرياض</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="routeSelect"><svg class="ic sm"><use href="#i-pin"/></svg> إلى</label>
+        <select id="routeSelect" class="select">
+          <option value="makkah">مكة المكرمة</option>
+          <option value="qassim">القصيم</option>
+          <option value="dammam">الدمام</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <span class="field-label"><svg class="ic sm"><use href="#i-target"/></svg> الموقع الحالي</span>
+        <button type="button" id="locateBtn" class="locate-btn">
+          <svg class="ic sm"><use href="#i-target"/></svg> تحديد عبر الموقع
+        </button>
+        <span id="locateHint" class="field-hint" role="status"></span>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="currentKm"><svg class="ic sm"><use href="#i-road"/></svg> المسافة المقطوعة (كم)</label>
+        <input type="number" id="currentKm" class="km-input" min="0" value="0" inputmode="numeric">
+        <span class="field-hint">تُحفظ في متصفحك فقط</span>
+      </div>
+    </div>
+
+    <div class="filters">
+      <div class="filter-group">
+        <h3>نوع الوقود</h3>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" class="fuel-filter" value="p91"> بنزين 91</label>
+          <label class="chip"><input type="checkbox" class="fuel-filter" value="p95"> بنزين 95</label>
+          <label class="chip"><input type="checkbox" class="fuel-filter" value="diesel"> ديزل</label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h3>الخدمات المطلوبة (مرصودة في OSM ضمن 500 متر)</h3>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" class="svc-filter" value="toilets"> دورات مياه</label>
+          <label class="chip"><input type="checkbox" class="svc-filter" value="grocery"> بقالة</label>
+          <label class="chip"><input type="checkbox" class="svc-filter" value="carwash"> غسيل سيارات</label>
+          <label class="chip"><input type="checkbox" class="svc-filter" value="workshop"> ورشة</label>
+          <label class="chip"><input type="checkbox" class="svc-filter" value="mosque"> مسجد</label>
+          <label class="chip"><input type="checkbox" class="svc-filter" value="restaurant"> مطعم</label>
+          <label class="chip"><input type="checkbox" class="svc-filter" value="cafe"> مقهى</label>
+          <label class="chip"><input type="checkbox" class="svc-filter" value="atm"> صراف</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. زر البحث -->
+    <button type="button" id="searchBtn" class="search-btn">
+      <svg class="ic"><use href="#i-search"/></svg> ابحث عن المحطات
+    </button>
+  </section>
+
+  <div class="results-layout">
+    <!-- 6. نتائج الرحلة -->
+    <section class="results-block" aria-label="نتائج الرحلة">
+      <div class="card-head">
+        <h2>نتائج الرحلة</h2>
+      </div>
+      <div id="status" class="status loading" role="status" aria-live="polite">جاري تحميل البيانات...</div>
+
+      <div class="stats">
+        <div class="stat">
+          <strong id="stationCount">-</strong>
+          <span>محطة على الطريق</span>
+        </div>
+        <div class="stat">
+          <strong id="totalKm">-</strong>
+          <span>طول الطريق (كم)</span>
+        </div>
+        <div class="stat">
+          <strong id="countShown">-</strong>
+          <span>محطة مطابقة لاختياراتك</span>
+        </div>
+      </div>
+      <p id="nextHint" class="next-hint"></p>
+    </section>
+
+    <!-- 7. الخريطة -->
+    <section class="card map-card" aria-label="خريطة الطريق">
+      <div class="card-head">
+        <h2>خريطة الطريق</h2>
+      </div>
+      <p class="map-note">الدوائر الذهبية تطابق اختياراتك، والبيضاء خارج الفلاتر أو تجاوزتها، والدائرة البنية موقعك التقريبي</p>
+      <div id="map"></div>
+    </section>
+
+    <!-- 8. بطاقات المحطات -->
+    <section id="stations" class="stations-block">
+      <div class="card-head">
+        <h2>محطات الوقود أمامك</h2>
+        <p class="map-note">مرتبة من الأقرب إلى الأبعد، والمحطات التي تجاوزتها مستبعدة</p>
+      </div>
+      <div id="list" class="stations-grid"></div>
+    </section>
+  </div>
+</main>
+
+<!-- 9. التذييل -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <section id="about" class="footer-col">
+      <h2>عن دربك</h2>
+      <p>دربك موقع معلوماتي يساعد المسافرين على معرفة محطات الوقود على الطرق المحددة، بالاعتماد على بيانات OpenStreetMap والمسارات من OSRM.</p>
+    </section>
+
+    <section id="contact" class="footer-col">
+      <h2>اتصل بنا</h2>
+      <p>لأي استفسار أو ملاحظة على المحطات أو الموقع:</p>
+      <a class="mail-btn" href="mailto:ahooud221@hotmail.com"><svg class="ic sm"><use href="#i-mail"/></svg> ahooud221@hotmail.com</a>
+    </section>
+
+    <section id="terms-section" class="footer-col">
+      <h2>الشروط والأحكام</h2>
+      <ul class="terms-list">
+        <li>معلومات المحطات والمسافات والخدمات إرشادية وقد تتغير.</li>
+        <li>على المستخدم التأكد من المعلومات قبل الاعتماد عليها.</li>
+      </ul>
+      <button type="button" class="link-btn open-terms">عرض النص الكامل</button>
+    </section>
+  </div>
+  <p class="copy">© دربك. بيانات المحطات من OpenStreetMap، والمسافات حسب الطريق الفعلي.</p>
+</footer>
+
+<dialog id="terms">
+  <div class="dialog-head">
+    <h2>الشروط والأحكام</h2>
+    <button type="button" id="closeTerms" class="close-btn" aria-label="إغلاق">✕</button>
+  </div>
+  <div class="dialog-body">
+    <h4>1. طبيعة الخدمة</h4>
+    <p>دربك موقع معلوماتي يساعد المسافرين على معرفة محطات الوقود على الطرق المحددة. الموقع لا يبيع وقوداً ولا يقدم خدمة نقل.</p>
+
+    <h4>2. مصدر البيانات ودقتها</h4>
+    <p>بيانات المحطات والخدمات مأخوذة من OpenStreetMap، وقد تكون غير مكتملة أو غير محدّثة. الأسعار معروضة كمرجع وقد تتغير، والمسافات تقريبية حسب الطريق. الخدمات المعروضة لا تعني تأكيد توفرها. تحقق من المحطة قبل السفر.</p>
+
+    <h4>3. الاستخدام المسموح</h4>
+    <p>يحق لك استخدام الموقع لأغراضك الشخصية غير التجارية. يُمنع نسخ المحتوى أو إعادة نشره دون إذن كتابي.</p>
+
+    <h4>4. الخصوصية</h4>
+    <p>الكيلومتر الذي تدخله، أو الذي يُحدد من موقعك، يُحفظ في متصفحك فقط ولا يُرسل إلى أي جهة. موقعك يُستخدم محلياً لتقدير المسافة على الطريق فقط. الاستعلام يرسل إحداثيات الطريق فقط إلى خدمات OSRM وOverpass.</p>
+
+    <h4>5. السلامة أولاً</h4>
+    <p>قبل أي رحلة، تأكد من حالة مركبتك وكمية الوقود الكافية، والتزم بأنظمة المرور.</p>
+
+    <h4>6. التواصل</h4>
+    <p>لأي استفسار أو ملاحظة: ahooud221@hotmail.com</p>
+  </div>
+</dialog>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
